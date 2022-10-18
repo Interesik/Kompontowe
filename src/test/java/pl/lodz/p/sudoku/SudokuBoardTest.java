@@ -30,19 +30,31 @@ class SudokuBoardTest {
         assertFalse(isSame);
 
         for(int row = 0; row < 9; row++) {
-            Set<Integer> rows = new HashSet<Integer>();
+            Set<Integer> rows = new HashSet<>();
             for(int col = 0; col < 9; col++) {
                 rows.add(c.getIndex(row,col));
             }
             assertEquals(rows.size(),9);
         }
         for(int col = 0; col < 9; col++) {
-            Set<Integer> cols = new HashSet<Integer>();
+            Set<Integer> cols = new HashSet<>();
             for(int row = 0; row < 9; row++) {
                 cols.add(c.getIndex(row,col));
             }
             assertEquals(cols.size(),9);
         }
-        //TODO:check if 3x3 matrix is corect
+        for(int row = 0; row < 9;row+=3) {
+            for (int col = 0;col < 9;col+=3) {
+                Set<Integer> matrix = new HashSet<>();
+                int startRow = row - row % 3;
+                int startCol = col - col % 3;
+                for (int j = 0; j < 3; j++) {
+                    for (int g = 0; g < 3; g++) {
+                        matrix.add(c.getIndex(j + startRow,g + startCol));
+                    }
+                }
+                assertEquals(matrix.size(),9);
+            }
+        }
     }
 }

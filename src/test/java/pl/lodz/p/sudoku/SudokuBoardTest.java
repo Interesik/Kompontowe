@@ -9,10 +9,11 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SudokuBoardTest {
-
-    @Test
-    void SudokuBoard(){
-    }
+    /**
+     * Test fillBoard
+     * Sprawdzenie czy fillBoard dla dwóch różnych SudokuBoard generuję to samo rozwiąznie.
+     * Kolejno sprawdzanie czy uzyskane rozwiązanie jest poprawne względem reguł sudoku.
+     */
     @Test
     void fillBoard() {
         SudokuBoard c = new SudokuBoard();

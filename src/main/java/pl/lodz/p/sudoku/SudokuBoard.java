@@ -1,15 +1,18 @@
 package pl.lodz.p.sudoku;
 
-
 import java.util.Random;
 
-public class SudokuBoard {
-    private int[][] board = new int[9][9];
 
+public class SudokuBoard {
+    private final int[][] board = new int[9][9];
+
+    /**
+     * Konstruktor Klasy SudokuBorad, Generuje losową plansze Sudoku z 5 cyframi.
+     */
     public SudokuBoard() {
         // random generate starting board
         Random ran = new Random();
-        for (int r = 0; r < ran.nextInt(3) + 2; r++) {
+        for (int r = 0; r < 5; r++) {
             int rand = ran.nextInt(9) + 1;
             int ranCol = ran.nextInt(9);
             int ranRow = ran.nextInt(9);
@@ -41,6 +44,7 @@ public class SudokuBoard {
                 for (int g = 0; g < 3; g++) {
                     if (board[j + startRow][g + startCol] == rand) {
                         isAllowed = false;
+                        break;
                     }
                 }
             }
@@ -53,6 +57,10 @@ public class SudokuBoard {
         this.fillBoard();
     }
 
+    /**
+     * Rekurencyjna postać SudokuSolvera.
+     * @return zrwraca true gdy powiedzie się uzupełnienie planszy, false jeżeli nie.
+     */
     public boolean fillBoard() {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[row].length; col++) {
@@ -86,6 +94,7 @@ public class SudokuBoard {
                             for (int g = 0; g < 3; g++) {
                                 if (board[j + startRow][g + startCol] == i) {
                                     isAllowed = false;
+                                    break;
                                 }
                             }
                         }

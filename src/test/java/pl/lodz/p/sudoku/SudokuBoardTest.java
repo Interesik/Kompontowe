@@ -11,15 +11,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class SudokuBoardTest {
     /**
      * Test fillBoard
-     * Sprawdzenie czy fillBoard dla dwóch różnych SudokuBoard generuję to samo rozwiąznie.
-     * Kolejno sprawdzanie czy uzyskane rozwiązanie jest poprawne względem reguł sudoku.
+     * Sprawdzenie czy solveGame dla dwóch różnych SudokuBoard generuję to samo rozwiąznie.
+     * Kolejno sprawdzanie czy uzyskane rozwiązanie jest poprawne względem reguł gry sudoku.
      */
     @Test
-    void fillBoard() {
+    void solveGame() {
         SudokuBoard c = new SudokuBoard();
         SudokuBoard c2 = new SudokuBoard();
-        assertTrue(c2.fillBoard());
-        assertTrue(c.fillBoard());
+        assertTrue(c2.solveGame());
+        assertTrue(c.solveGame());
         boolean isSame = true;
         for(int row = 0;row < 9;row++) {
             for (int col = 0;col < 9;col++) {
@@ -58,4 +58,12 @@ class SudokuBoardTest {
             }
         }
     }
+
+    @Test
+    void getterSetter() {
+        SudokuBoard test = new SudokuBoard();
+        test.setIndex(0,0,1);
+        assertEquals(test.getIndex(0,0),1);
+    }
+
 }

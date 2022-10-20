@@ -100,7 +100,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>pl.first.firstjava.App</mainClass>
+                            <mainClass>pl.lodz.p.sudoku.SudokuBoard</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -144,8 +144,34 @@
                     </reportSet>
                 </reportSets>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jxr-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-pmd-plugin</artifactId>
+                <version>3.15.0</version>
+            </plugin>
         </plugins>
     </reporting>
+    <developers>
+        <developer>
+            <id>236558</id>
+            <name>Karol Kauzsek</name>
+            <email>236558@edu.p.lodz.pl</email>
+        </developer>
+        <!-- Dodaj się Kuba -->
+        <developer>
+            <id></id>
+            <name>Second Developer</name>
+            <email></email>
+        </developer>
+    </developers>
+    <description>Projekt grupy laboratoryjnej LCH_CZ_1015_07</description>
+
+
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

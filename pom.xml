@@ -164,9 +164,9 @@
         </developer>
         <!-- Dodaj się Kuba -->
         <developer>
-            <id></id>
-            <name>Second Developer</name>
-            <email></email>
+            <id>236601</id>
+            <name>Jakub Mielczarek</name>
+            <email>236601@edu.p.lodz.pl</email>
         </developer>
     </developers>
     <description>Projekt grupy laboratoryjnej LCH_CZ_1015_07</description>

@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class SudokuBoard {
     private final int[][] board = new int[9][9];
-    BacktrackingSudokuSolver solver = new BacktrackingSudokuSolver();
+    SudokuSolver solver = new BacktrackingSudokuSolver();
     /**
      * Konstruktor Klasy SudokuBorad, Generuje losową plansze Sudoku z 5 cyframi.
      */
@@ -25,19 +25,11 @@ public class SudokuBoard {
                     break;
                 }
             }
-            // check if in row can add number
-            if (!isAllowed) {
-                continue;
-            }
             for (int j = 0; j < board.length; j++) {
                 if (board[j][ranCol] == rand) {
                     isAllowed = false;
                     break;
                 }
-            }
-            // check if in col can add number
-            if (!isAllowed) {
-                continue;
             }
             int startRow = ranRow - ranRow % 3;
             int startCol = ranCol - ranCol % 3;
@@ -49,7 +41,7 @@ public class SudokuBoard {
                     }
                 }
             }
-            //check if safe to add number matrix 3x3
+            //check if safe to add number
             if (!isAllowed) {
                 continue;
             }

@@ -4,15 +4,20 @@ import java.util.Random;
 
 
 public class SudokuBoard {
-    private final int[][] board = new int[9][9];
+    private SudokuField[][] board = new SudokuField[9][9];
     private SudokuSolver solver;
     /**
      * Konstruktor Klasy SudokuBorad, Generuje losową plansze Sudoku z 5 cyframi.
-     * @param typesolver rodzaj metody rozwiązaywania sudoku
+     * @param resolver rodzaj metody rozwiązaywania sudoku
      */
 
-    public SudokuBoard(SudokuSolver typesolver) {
-        this.solver = typesolver;
+    public SudokuBoard(SudokuSolver resolver) {
+        for (int row = 0; row < board.length; row++) {
+            for (int col = 0; col < board[0].length; col++) {
+                board[row][col] = new SudokuField();
+            }
+        }
+        this.solver = resolver;
         // random generate starting board
         Random ran = new Random();
         for (int r = 0; r < 9; r++) {
@@ -22,13 +27,13 @@ public class SudokuBoard {
             boolean isAllowed = true;
             // check if can add new board to set
             for (int j = 0; j < board[ranRow].length; j++) {
-                if (board[ranRow][j] == rand) {
+                if (board[ranRow][j].getValue() == rand) {
                     isAllowed = false;
                     break;
                 }
             }
             for (int j = 0; j < board.length; j++) {
-                if (board[j][ranCol] == rand) {
+                if (board[j][ranCol].getValue() == rand) {
                     isAllowed = false;
                     break;
                 }
@@ -37,7 +42,7 @@ public class SudokuBoard {
             int startCol = ranCol - ranCol % 3;
             for (int j = 0; j < 3; j++) {
                 for (int g = 0; g < 3; g++) {
-                    if (board[j + startRow][g + startCol] == rand) {
+                    if (board[j + startRow][g + startCol].getValue() == rand) {
                         isAllowed = false;
                         break;
                     }
@@ -47,7 +52,7 @@ public class SudokuBoard {
             if (!isAllowed) {
                 continue;
             }
-            board[ranRow][ranCol] = rand;
+            board[ranRow][ranCol].setValue(rand);
         }
         this.solveGame();
     }
@@ -62,12 +67,51 @@ public class SudokuBoard {
         return solver.solve(this);
     }
 
+    private boolean checkBoard() {
+        boolean isCorrect = true;
+        for (int i = 0; i < 9;i++) {
+            isCorrect = isCorrect && getRow(i).verify();
+            isCorrect = isCorrect && getColumn(i).verify();
+        }
+        for (int i = 0; i < 3;i++) {
+            for (int j = 0; j < 3;j++) {
+                isCorrect = isCorrect && getBox(i,j).verify();
+            }
+        }
+        return isCorrect;
+    }
+
     public int getIndex(int row,int col) {
-        return board[row][col];
+        return board[row][col].getValue();
     }
 
     public void setIndex(int row,int col,int number) {
-        board[row][col] = number;
+        board[row][col].setValue(number);
+    }
+
+    public SudokuRow getRow(int row) {
+        return new SudokuRow(board[row]);
+    }
+
+    public SudokuColumn getColumn(int col) {
+        SudokuField[] column = new SudokuField[9];
+        for (int row = 0;row < board.length;row++) {
+            column[row] = board[row][col];
+        }
+        return new SudokuColumn(column);
+    }
+
+    public SudokuBox getBox(int row,int col) {
+        SudokuField[] box = new SudokuField[9];
+        int index = 0;
+        int startRow = row - row % 3;
+        int startCol = col - col % 3;
+        for (int j = 0; j < 3; j++) {
+            for (int g = 0; g < 3; g++) {
+               box[index++] = board[j + startRow][g + startCol];
+            }
+        }
+        return new SudokuBox(box);
     }
 
     public static void main(String[] args) {

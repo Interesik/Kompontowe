@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class DullSudokuSolverTest {
     @Test
     void solve() {
-        SudokuBoard s = new SudokuBoard();
-        DullSudokuSolver solver = new DullSudokuSolver();
-        assertFalse(solver.solve(s));
+        DullSudokuSolver dullSolver = new DullSudokuSolver();
+        SudokuBoard s = new SudokuBoard(dullSolver);
+        assertFalse(s.solveGame());
     }
 }

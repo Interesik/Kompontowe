@@ -17,7 +17,8 @@ class SudokuBoardTest {
      */
     @Test
     void SudokuBorad(){
-        SudokuBoard c = new SudokuBoard();
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard c = new SudokuBoard(back);
         assertTrue(c.solveGame());
         for(int row = 0; row < 9; row++) {
             Set<Integer> rows = new HashSet<>();
@@ -55,8 +56,9 @@ class SudokuBoardTest {
      */
     @Test
     void solveGame() {
-        SudokuBoard c = new SudokuBoard();
-        SudokuBoard c2 = new SudokuBoard();
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard c = new SudokuBoard(back);
+        SudokuBoard c2 = new SudokuBoard(back);
         assertTrue(c2.solveGame());
         assertTrue(c.solveGame());
         boolean isSame = true;
@@ -100,7 +102,8 @@ class SudokuBoardTest {
 
     @Test
     void getterSetter() {
-        SudokuBoard test = new SudokuBoard();
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard test = new SudokuBoard(back);
         test.setIndex(0,0,1);
         assertEquals(test.getIndex(0,0),1);
     }

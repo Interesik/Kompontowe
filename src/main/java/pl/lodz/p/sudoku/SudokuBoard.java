@@ -5,12 +5,14 @@ import java.util.Random;
 
 public class SudokuBoard {
     private final int[][] board = new int[9][9];
-    SudokuSolver solver = new BacktrackingSudokuSolver();
+    private SudokuSolver solver;
     /**
      * Konstruktor Klasy SudokuBorad, Generuje losową plansze Sudoku z 5 cyframi.
+     * @param typesolver rodzaj metody rozwiązaywania sudoku
      */
 
-    public SudokuBoard() {
+    public SudokuBoard(SudokuSolver typesolver) {
+        this.solver = typesolver;
         // random generate starting board
         Random ran = new Random();
         for (int r = 0; r < 9; r++) {
@@ -69,7 +71,8 @@ public class SudokuBoard {
     }
 
     public static void main(String[] args) {
-        SudokuBoard s = new SudokuBoard();
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard s = new SudokuBoard(back);
         for (int i = 0; i < s.board.length; i++) {
             for (int j = 0; j < s.board[0].length; j++) {
                 System.out.print(s.getIndex(i, j) + " ");

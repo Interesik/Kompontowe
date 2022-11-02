@@ -107,5 +107,4 @@ class SudokuBoardTest {
         test.setIndex(0,0,1);
         assertEquals(test.getIndex(0,0),1);
     }
-
 }

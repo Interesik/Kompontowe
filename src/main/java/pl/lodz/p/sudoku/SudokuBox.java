@@ -14,8 +14,14 @@ public class SudokuBox  implements SudokuVerifier {
     public boolean verify() {
         Set<Integer> check = new HashSet<>();
         for (int j = 0; j < 9; j++) {
+            if (box[j].getValue() == 0) {
+                continue;
+            }
+            if (check.contains(box[j].getValue())) {
+                return false;
+            }
             check.add(box[j].getValue());
         }
-        return check.size() == 9;
+        return true;
     }
 }

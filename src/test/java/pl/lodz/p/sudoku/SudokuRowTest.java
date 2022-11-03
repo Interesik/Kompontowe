@@ -5,7 +5,10 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SudokuRowTest {
-
+/**
+     * Test SudokuRow verify
+     * Sprawdzenie czy verify poprawnie sprawdza uzupełniony rząd.
+     */
     @Test
     void verify() {
         SudokuSolver solver = new BacktrackingSudokuSolver();

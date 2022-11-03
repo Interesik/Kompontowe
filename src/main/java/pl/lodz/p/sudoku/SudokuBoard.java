@@ -11,12 +11,6 @@ public class SudokuBoard {
 
     private SudokuSolver solver;
 
-    /**
-     * Konstruktor Klasy SudokuBorad, Generuje losową plansze Sudoku z 5 cyframi.
-     *
-     * @param resolver rodzaj metody rozwiązaywania sudoku
-     */
-
     public SudokuBoard(SudokuSolver resolver) {
         for (int row = 0; row < board.length; row++) {
             for (int col = 0; col < board[0].length; col++) {
@@ -47,13 +41,6 @@ public class SudokuBoard {
         this.solveGame();
     }
 
-    /**
-     * Funkcja rozwiązująca Sudoku.
-     * Wykorzystuje Implementacje BacktrakingSudokuSolver z intefejsu SudokuSolver.
-     *
-     * @return zrwraca true gdy powiedzie się uzupełnienie planszy, false jeżeli nie.
-     * @see BacktrackingSudokuSolver
-     */
     public boolean solveGame() {
         return solver.solve(this);
     }

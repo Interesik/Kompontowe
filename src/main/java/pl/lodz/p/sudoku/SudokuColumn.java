@@ -1,12 +1,13 @@
 package pl.lodz.p.sudoku;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class SudokuColumn implements SudokuVerifier {
-    private SudokuField[] column;
+    private List<SudokuField> column;
 
-    public SudokuColumn(SudokuField[] column) {
+    public SudokuColumn(List<SudokuField> column) {
         this.column = column;
     }
 
@@ -14,13 +15,13 @@ public class SudokuColumn implements SudokuVerifier {
     public boolean verify() {
         Set<Integer> check = new HashSet<>();
         for (int j = 0; j < 9; j++) {
-            if (column[j].getValue() == 0) {
+            if (column.get(j).getValue() == 0) {
                 continue;
             }
-            if (check.contains(column[j].getValue())) {
+            if (check.contains(column.get(j).getValue())) {
                 return false;
             }
-            check.add(column[j].getValue());
+            check.add(column.get(j).getValue());
         }
         return true;
     }

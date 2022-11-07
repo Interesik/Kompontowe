@@ -1,21 +1,20 @@
 package pl.lodz.p.sudoku;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
+
 
 
 public class SudokuBoard {
-    private SudokuField[][] board = new SudokuField[9][9];
+    private List<SudokuField> sudokuFields = new ArrayList<>();
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
     private SudokuSolver solver;
 
     public SudokuBoard(SudokuSolver resolver) {
-        for (int row = 0; row < board.length; row++) {
-            for (int col = 0; col < board[0].length; col++) {
-                board[row][col] = new SudokuField();
-            }
+        for (int i = 0; i < 81; i++) {
+                sudokuFields.add(new SudokuField());
         }
         for (int i = 0; i < 9; i++) {
             lisners.add(getRow(i));
@@ -28,16 +27,10 @@ public class SudokuBoard {
         }
         this.solver = resolver;
         // random generate starting board
-        Random ran = new Random();
         for (int r = 0; r < 9; r++) {
-            int rand = ran.nextInt(9) + 1;
-            int ranCol = ran.nextInt(9);
-            int ranRow = ran.nextInt(9);
-            board[ranRow][ranCol].setValue(rand);
-            if (!checkBoard()) {
-                board[ranRow][ranCol].setValue(0);
-            }
+            sudokuFields.get(r).setValue(r);
         }
+        Collections.shuffle(sudokuFields);
         this.solveGame();
     }
 
@@ -46,42 +39,42 @@ public class SudokuBoard {
     }
 
     private boolean checkBoard() {
-        boolean isCorrect = true;
         for (SudokuVerifier lis : lisners) {
-            isCorrect = isCorrect && lis.verify();
+            if (!lis.verify()) {
+                return false;
+            }
         }
-        return isCorrect;
+        return true;
     }
 
-    public int getIndex(int row, int col) {
-        return board[row][col].getValue();
+    public int getIndex(int row,int col) {
+        return sudokuFields.get(row * 9 + col).getValue();
     }
 
-    public void setIndex(int row, int col, int number) {
-        board[row][col].setValue(number);
+    public void setIndex(int row,int col, int number) {
+        sudokuFields.get(row * 9 + col).setValue(number);
     }
 
     public SudokuRow getRow(int row) {
-        return new SudokuRow(board[row]);
+        return new SudokuRow(sudokuFields.subList((row * 9),(row * 9) + 9));
     }
 
     public SudokuColumn getColumn(int col) {
-        SudokuField[] column = new SudokuField[9];
-        for (int row = 0; row < board.length; row++) {
-            column[row] = board[row][col];
+        List<SudokuField> column = new ArrayList<>(9);
+        for (int row = 0; row < 9; row++) {
+            column.add(sudokuFields.get(col + (row * 9)));
         }
         return new SudokuColumn(column);
     }
 
     public SudokuBox getBox(int row, int col) {
-        SudokuField[] box = new SudokuField[9];
+        List<SudokuField> box = new ArrayList<>(9);
         int index = 0;
         int startRow = row - row % 3;
         int startCol = col - col % 3;
         for (int j = 0; j < 3; j++) {
-            for (int g = 0; g < 3; g++) {
-                box[index++] = board[j + startRow][g + startCol];
-            }
+            box.addAll(sudokuFields.subList(startCol + (9 * startRow) + (9 * j),
+                    startCol + 3 + (9 * startRow) + (9 * j)));
         }
         return new SudokuBox(box);
     }

@@ -1,20 +1,21 @@
 package pl.lodz.p.sudoku;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 
 
 public class SudokuBoard {
-    private List<SudokuField> sudokuFields = new ArrayList<>();
+    private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
     private SudokuSolver solver;
 
     public SudokuBoard(SudokuSolver resolver) {
         for (int i = 0; i < 81; i++) {
-                sudokuFields.add(new SudokuField());
+                sudokuFields.set(i,new SudokuField());
         }
         for (int i = 0; i < 9; i++) {
             lisners.add(getRow(i));

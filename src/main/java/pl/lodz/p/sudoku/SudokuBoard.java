@@ -54,10 +54,12 @@ public class SudokuBoard {
 
     public void setIndex(int row,int col, int number) {
         sudokuFields.get(row * 9 + col).setValue(number);
+        // on every value change checkBoard
+        checkBoard();
     }
 
     public SudokuRow getRow(int row) {
-        return new SudokuRow(sudokuFields.subList((row * 9),(row * 9) + 9));
+        return new SudokuRow(sudokuFields.subList(row * 9,row * 9 + 9));
     }
 
     public SudokuColumn getColumn(int col) {
@@ -70,7 +72,6 @@ public class SudokuBoard {
 
     public SudokuBox getBox(int row, int col) {
         List<SudokuField> box = new ArrayList<>(9);
-        int index = 0;
         int startRow = row - row % 3;
         int startCol = col - col % 3;
         for (int j = 0; j < 3; j++) {

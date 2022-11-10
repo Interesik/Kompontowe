@@ -23,4 +23,16 @@ class SudokuRowTest {
         s.setIndex(1,5,0);
         assertTrue(s.getRow(1).verify());
     }
+
+    @Test
+    void testEquals() {
+    }
+
+    @Test
+    void testHashCode() {
+    }
+
+    @Test
+    void testToString() {
+    }
 }

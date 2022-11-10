@@ -17,4 +17,16 @@ class SudokuColumnTest {
         s.setIndex(1,1,s.getIndex(2,1));
         assertFalse(s.getColumn(1).verify());
     }
+
+    @Test
+    void testEquals() {
+    }
+
+    @Test
+    void testHashCode() {
+    }
+
+    @Test
+    void testToString() {
+    }
 }

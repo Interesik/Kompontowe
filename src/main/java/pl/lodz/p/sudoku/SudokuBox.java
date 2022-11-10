@@ -3,6 +3,10 @@ package pl.lodz.p.sudoku;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class SudokuBox  implements SudokuVerifier {
     private List<SudokuField> box;
@@ -24,5 +28,36 @@ public class SudokuBox  implements SudokuVerifier {
             check.add(box.get(j).getValue());
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        SudokuBox sudokuBox = (SudokuBox) o;
+
+        return new EqualsBuilder()
+                .append(box, sudokuBox.box)
+                .isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37)
+                .append(box)
+                .toHashCode();
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("box", box)
+                .toString();
     }
 }

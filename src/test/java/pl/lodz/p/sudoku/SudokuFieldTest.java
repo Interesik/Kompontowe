@@ -27,4 +27,16 @@ class SudokuFieldTest {
         f.setValue(2);
         assertEquals(2,f.getValue());
     }
+
+    @Test
+    void testEquals() {
+    }
+
+    @Test
+    void testHashCode() {
+    }
+
+    @Test
+    void testToString() {
+    }
 }

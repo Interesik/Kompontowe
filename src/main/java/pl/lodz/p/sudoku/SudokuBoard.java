@@ -1,5 +1,7 @@
 package pl.lodz.p.sudoku;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -7,6 +9,7 @@ import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 
 
@@ -18,7 +21,7 @@ public class SudokuBoard {
 
     public SudokuBoard(SudokuSolver resolver) {
         for (int i = 0; i < 81; i++) {
-                sudokuFields.set(i,new SudokuField());
+            sudokuFields.set(i, new SudokuField());
         }
         for (int i = 0; i < 9; i++) {
             lisners.add(getRow(i));
@@ -51,18 +54,18 @@ public class SudokuBoard {
         return true;
     }
 
-    public int getIndex(int row,int col) {
+    public int getIndex(int row, int col) {
         return sudokuFields.get(row * 9 + col).getValue();
     }
 
-    public void setIndex(int row,int col, int number) {
+    public void setIndex(int row, int col, int number) {
         sudokuFields.get(row * 9 + col).setValue(number);
         // on every value change checkBoard
         checkBoard();
     }
 
     public SudokuRow getRow(int row) {
-        return new SudokuRow(sudokuFields.subList(row * 9,row * 9 + 9));
+        return new SudokuRow(sudokuFields.subList(row * 9, row * 9 + 9));
     }
 
     public SudokuColumn getColumn(int col) {
@@ -112,21 +115,15 @@ public class SudokuBoard {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
                 .append("sudokuFields", sudokuFields)
                 .append("solver", solver)
                 .toString();
     }
-}
-/*
+
     public static void main(String[] args) {
-        SudokuSolver back = new BacktrackingSudokuSolver();
+        BacktrackingSudokuSolver back = new BacktrackingSudokuSolver();
         SudokuBoard s = new SudokuBoard(back);
-        for (int i = 0; i < s.board.length; i++) {
-            for (int j = 0; j < s.board[0].length; j++) {
-                System.out.print(s.getIndex(i, j) + " ");
-            }
-            System.out.println();
-        }
+        System.out.println(s.sudokuFields.get(1).toString());
     }
- */
+}

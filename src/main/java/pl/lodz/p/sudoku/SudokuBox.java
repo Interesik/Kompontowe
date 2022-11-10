@@ -1,11 +1,15 @@
 package pl.lodz.p.sudoku;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+
 
 
 public class SudokuBox  implements SudokuVerifier {
@@ -41,7 +45,6 @@ public class SudokuBox  implements SudokuVerifier {
         }
 
         SudokuBox sudokuBox = (SudokuBox) o;
-
         return new EqualsBuilder()
                 .append(box, sudokuBox.box)
                 .isEquals();
@@ -54,10 +57,11 @@ public class SudokuBox  implements SudokuVerifier {
                 .toHashCode();
     }
 
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
                 .append("box", box)
-                .toString();
+                .build();
     }
 }

@@ -1,8 +1,11 @@
 package pl.lodz.p.sudoku;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
 
 public class SudokuField {
     private int value;
@@ -38,15 +41,15 @@ public class SudokuField {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(17, 37)
+        return new HashCodeBuilder()
                 .append(value)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this)
+        return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
                 .append("value", value)
-                .toString();
+                .build();
     }
 }

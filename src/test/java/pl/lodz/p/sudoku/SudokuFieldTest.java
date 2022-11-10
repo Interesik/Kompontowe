@@ -30,13 +30,27 @@ class SudokuFieldTest {
 
     @Test
     void testEquals() {
+        SudokuField tE = new SudokuField();
+        assertTrue(tE.equals(tE));
+        SudokuField tE2 = new SudokuField();
+        assertTrue(tE.equals(tE2));
+        tE2.setValue(4);
+        assertFalse(tE.equals(tE2));
     }
 
     @Test
     void testHashCode() {
+        SudokuField tE = new SudokuField();
+        assertEquals(tE.hashCode(),tE.hashCode());
+        SudokuField tE2 = new SudokuField();
+        assertEquals(tE.hashCode(),tE2.hashCode());
+        tE2.setValue(4);
+        assertNotEquals(tE.hashCode(),tE2.hashCode());
     }
 
     @Test
     void testToString() {
+        SudokuField tE = new SudokuField();
+        assertEquals(tE.toString(),tE.getClass().getSimpleName()+"[value=0]");
     }
 }

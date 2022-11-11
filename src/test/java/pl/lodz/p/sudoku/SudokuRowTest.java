@@ -33,6 +33,9 @@ class SudokuRowTest {
         SudokuBoard s = new SudokuBoard(solver);
         assertTrue(s.getRow(0).equals(s.getRow(0)));
         assertFalse(s.getRow(0).equals(s.getRow(3)));
+        assertFalse(s.getRow(0).equals(null));
+        SudokuRow row = s.getRow(0);
+        assertTrue(row.equals(row));
     }
 
     @Test

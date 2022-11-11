@@ -110,13 +110,41 @@ class SudokuBoardTest {
 
     @Test
     void testEquals() {
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard test = new SudokuBoard(back);
+        assertTrue(test.equals(test));
+        SudokuBoard test2 = new SudokuBoard(back);
+        assertFalse(test.equals(test2));
+        assertFalse(test.equals(this));
+        assertFalse(test.equals(null));
     }
 
     @Test
     void testHashCode() {
+        SudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard s = new SudokuBoard(solver);
+        SudokuBoard test2 = new SudokuBoard(solver);
+        assertEquals(s.hashCode(),s.hashCode());
+        assertNotEquals(test2.hashCode(),s.hashCode());
     }
 
     @Test
     void testToString() {
+        SudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard s = new SudokuBoard(solver);
+        String str = s.getClass().getSimpleName()+"[sudokuFields=[";
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
+                if(i == 8 && j == 8){
+                    str += "SudokuField[value="+s.getIndex(i,j)+"]";
+                }
+                else {
+                    str += "SudokuField[value="+s.getIndex(i,j)+"], ";
+                }
+
+            }
+        }
+        str += "]]";
+        assertEquals(str,s.toString());
     }
 }

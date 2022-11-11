@@ -109,21 +109,18 @@ public class SudokuBoard {
     public int hashCode() {
         return new HashCodeBuilder(17, 37)
                 .append(sudokuFields)
-                .append(solver)
                 .toHashCode();
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
+        return new ToStringBuilder(this, SHORT_PREFIX_STYLE)
                 .append("sudokuFields", sudokuFields)
-                .append("solver", solver)
                 .toString();
     }
-
-    public static void main(String[] args) {
-        BacktrackingSudokuSolver back = new BacktrackingSudokuSolver();
-        SudokuBoard s = new SudokuBoard(back);
-        System.out.println(s.sudokuFields.get(1).toString());
-    }
 }
+//    public static void main(String[] args) {
+//        BacktrackingSudokuSolver back = new BacktrackingSudokuSolver();
+//        SudokuBoard s = new SudokuBoard(back);
+//        System.out.println(s.toString());
+//    }

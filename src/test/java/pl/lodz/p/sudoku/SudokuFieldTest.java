@@ -35,7 +35,10 @@ class SudokuFieldTest {
         SudokuField tE2 = new SudokuField();
         assertTrue(tE.equals(tE2));
         tE2.setValue(4);
+        tE.setValue(3);
         assertFalse(tE.equals(tE2));
+        assertFalse(tE.equals(this));
+        assertFalse(tE.equals(null));
     }
 
     @Test

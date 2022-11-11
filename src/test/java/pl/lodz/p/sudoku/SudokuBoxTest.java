@@ -27,6 +27,9 @@ class SudokuBoxTest {
         SudokuBoard s = new SudokuBoard(solver);
         assertTrue(s.getBox(0,0).equals(s.getBox(0,0)));
         assertFalse(s.getBox(0,0).equals(s.getBox(3,0)));
+        assertFalse(s.getBox(0,0).equals(null));
+        SudokuBox box = s.getBox(0,0);
+        assertTrue(box.equals(box));
     }
 
     @Test

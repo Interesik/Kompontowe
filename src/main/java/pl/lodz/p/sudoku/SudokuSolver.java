@@ -1,7 +1,9 @@
 package pl.lodz.p.sudoku;
 
 
-public interface SudokuSolver {
+import java.io.Serializable;
+
+public interface SudokuSolver extends Serializable {
 
     boolean solve(SudokuBoard sudokuBoard);
 }

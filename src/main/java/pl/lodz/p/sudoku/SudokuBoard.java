@@ -2,6 +2,7 @@ package pl.lodz.p.sudoku;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -13,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 
-public class SudokuBoard {
+public class SudokuBoard implements Serializable {
     private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
@@ -65,7 +66,9 @@ public class SudokuBoard {
     }
 
     public SudokuRow getRow(int row) {
-        return new SudokuRow(sudokuFields.subList(row * 9, row * 9 + 9));
+        List<SudokuField> serializeSubList = new ArrayList<>(9);
+        serializeSubList.addAll(sudokuFields.subList(row * 9, row * 9 + 9));
+        return new SudokuRow(serializeSubList);
     }
 
     public SudokuColumn getColumn(int col) {
@@ -78,12 +81,14 @@ public class SudokuBoard {
 
     public SudokuBox getBox(int row, int col) {
         List<SudokuField> box = new ArrayList<>(9);
+        List<SudokuField> serializeSubList = new ArrayList<>(9);
         int startRow = row - row % 3;
         int startCol = col - col % 3;
         for (int j = 0; j < 3; j++) {
-            box.addAll(sudokuFields.subList(startCol + (9 * startRow) + (9 * j),
-                    startCol + 3 + (9 * startRow) + (9 * j)));
+            serializeSubList.addAll((sudokuFields.subList(startCol + (9 * startRow) + (9 * j),
+                    startCol + 3 + (9 * startRow) + (9 * j))));
         }
+        box.addAll(serializeSubList);
         return new SudokuBox(box);
     }
 
@@ -96,12 +101,9 @@ public class SudokuBoard {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
         SudokuBoard that = (SudokuBoard) o;
-
         return new EqualsBuilder()
                 .append(sudokuFields, that.sudokuFields)
-                .append(solver, that.solver)
                 .isEquals();
     }
 

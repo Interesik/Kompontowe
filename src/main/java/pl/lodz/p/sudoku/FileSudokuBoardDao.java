@@ -19,11 +19,8 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
                 FileInputStream fin = new FileInputStream(filename);
                 ObjectInputStream oin = new ObjectInputStream(fin)
                 ) {
-            SudokuBoard sb = (SudokuBoard) oin.readObject();
-            return sb;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+            return (SudokuBoard) oin.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
@@ -40,6 +37,8 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
         }
     }
 
+    //Cant implement because finaly cant be implementened read:
+    // https://docs.oracle.com/javase/tutorial/essential/exceptions/finally.html
     @Override
     public void close() throws Exception {
 

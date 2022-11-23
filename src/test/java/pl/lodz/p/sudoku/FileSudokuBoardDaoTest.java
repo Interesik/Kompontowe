@@ -39,7 +39,7 @@ class FileSudokuBoardDaoTest {
     void write() {
         fsbd.write(this.sb2);
         SudokuBoard sb4 = fsbd.read();
-        assertEquals(sb4,sb);
+        assertEquals(sb4,sb2);
         Exception exception = assertThrows(RuntimeException.class,()->fsbderror.write(sb));
         assertEquals(exception.getCause().getClass(), FileNotFoundException.class);
     }

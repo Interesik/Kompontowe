@@ -1,0 +1,3 @@
+module kompo {
+    requires model;
+}

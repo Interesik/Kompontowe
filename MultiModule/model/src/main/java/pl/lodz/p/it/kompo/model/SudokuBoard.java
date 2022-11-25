@@ -1,5 +1,7 @@
 package pl.lodz.p.it.kompo.model;
 
+import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,12 +11,12 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
 
 
 
-public class SudokuBoard implements Serializable {
+
+public class SudokuBoard implements Serializable,Cloneable {
     private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
@@ -24,6 +26,13 @@ public class SudokuBoard implements Serializable {
         for (int i = 0; i < 81; i++) {
             sudokuFields.set(i, new SudokuField());
         }
+        this.solver = resolver;
+        // random generate starting board
+        for (int r = 0; r < 9; r++) {
+            sudokuFields.get(r).setValue(r);
+        }
+        Collections.shuffle(sudokuFields);
+        this.solveGame();
         for (int i = 0; i < 9; i++) {
             lisners.add(getRow(i));
             lisners.add(getColumn(i));
@@ -33,13 +42,6 @@ public class SudokuBoard implements Serializable {
                 lisners.add(getBox(i, j));
             }
         }
-        this.solver = resolver;
-        // random generate starting board
-        for (int r = 0; r < 9; r++) {
-            sudokuFields.get(r).setValue(r);
-        }
-        Collections.shuffle(sudokuFields);
-        this.solveGame();
     }
 
     public boolean solveGame() {
@@ -120,9 +122,26 @@ public class SudokuBoard implements Serializable {
                 .append("sudokuFields", sudokuFields)
                 .toString();
     }
+
+    @Override
+    public SudokuBoard clone() throws CloneNotSupportedException {
+        SudokuBoard clone = new SudokuBoard(this.solver);
+        List<SudokuField> cloneSudokuFields = Arrays.asList(new SudokuField[81]);
+        List<SudokuVerifier> cloneLisners = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            cloneLisners.add(this.getRow(i).clone());
+            cloneLisners.add(this.getColumn(i).clone());
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                cloneLisners.add(this.getBox(i, j).clone());
+            }
+        }
+        for (int i = 0; i < 81; i++) {
+            cloneSudokuFields.set(i, this.sudokuFields.get(i).clone());
+        }
+        clone.lisners = cloneLisners;
+        clone.sudokuFields = cloneSudokuFields;
+        return clone;
+    }
 }
-//    public static void main(String[] args) {
-//        BacktrackingSudokuSolver back = new BacktrackingSudokuSolver();
-//        SudokuBoard s = new SudokuBoard(back);
-//        System.out.println(s.toString());
-//    }

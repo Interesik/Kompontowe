@@ -147,4 +147,15 @@ class SudokuBoardTest {
         str += "]]";
         assertEquals(str,s.toString());
     }
+
+    @Test
+    void Clonable() throws CloneNotSupportedException {
+        SudokuSolver solver = new BacktrackingSudokuSolver();
+        SudokuBoard sb = new SudokuBoard(solver);
+        SudokuBoard cloneSB = sb.clone();
+        assertNotSame(sb,cloneSB);
+        assertEquals(sb,cloneSB);
+        sb.setIndex(0,0,0);
+        assertNotEquals(sb,cloneSB);
+    }
 }

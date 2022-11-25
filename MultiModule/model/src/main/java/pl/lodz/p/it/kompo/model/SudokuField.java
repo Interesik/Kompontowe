@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 
-public class SudokuField implements Serializable {
+public class SudokuField implements Serializable,Cloneable {
     private int value;
 
     public SudokuField() {
@@ -54,5 +54,10 @@ public class SudokuField implements Serializable {
         return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
                 .append("value", value)
                 .build();
+    }
+
+    @Override
+    protected SudokuField clone() throws CloneNotSupportedException {
+        return (SudokuField) super.clone();
     }
 }

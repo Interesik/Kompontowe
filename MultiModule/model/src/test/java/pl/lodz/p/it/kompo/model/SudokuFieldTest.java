@@ -56,4 +56,15 @@ class SudokuFieldTest {
         SudokuField tE = new SudokuField();
         assertEquals(tE.toString(),tE.getClass().getSimpleName()+"[value=0]");
     }
+
+    @Test
+    void Clonable() throws CloneNotSupportedException {
+        SudokuField sf = new SudokuField();
+        SudokuField sf2 = sf.clone();
+        assertNotSame(sf,sf2);
+        assertEquals(sf,sf2);
+        sf.setValue(1);
+        assertNotSame(sf,sf2);
+        assertNotEquals(sf,sf2);
+    }
 }

@@ -2,6 +2,7 @@ package pl.lodz.p.it.kompo.model;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,5 +64,16 @@ public class SudokuBox  implements SudokuVerifier {
         return new ToStringBuilder(this,SHORT_PREFIX_STYLE)
                 .append("box", box)
                 .build();
+    }
+
+    @Override
+    protected SudokuBox clone() throws CloneNotSupportedException {
+        SudokuBox clone = new SudokuBox(this.box);
+        List<SudokuField> cloneList = Arrays.asList(new SudokuField[9]);
+        for (int i = 0; i < clone.box.size(); i++) {
+            cloneList.set(i, clone.box.get(i).clone());
+        }
+        clone.box = cloneList;
+        return clone;
     }
 }

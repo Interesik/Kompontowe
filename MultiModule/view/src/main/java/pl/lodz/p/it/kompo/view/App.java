@@ -1,6 +1,8 @@
 package pl.lodz.p.it.kompo.view;
 
-import pl.lodz.p.it.kompo.model.*;
+import pl.lodz.p.it.kompo.model.BacktrackingSudokuSolver;
+import pl.lodz.p.it.kompo.model.SudokuBoard;
+
 
 public class App {
     public static void main(String[] args) {

@@ -67,4 +67,24 @@ class SudokuFieldTest {
         assertNotSame(sf,sf2);
         assertNotEquals(sf,sf2);
     }
+
+    @Test
+    void compare() throws CloneNotSupportedException {
+        SudokuField sf = new SudokuField();
+        SudokuField sf2 = sf.clone();
+        SudokuField sf3 = sf.clone();
+        assertEquals(0,sf2.compareTo(sf));
+        assertThrowsExactly(NullPointerException.class,()->sf.compareTo(null));
+        sf.setValue(3);
+        assertTrue(sf.compareTo(sf2) == -sf2.compareTo(sf));
+        sf2.setValue(1);
+        assertTrue(sf.compareTo(sf2) > 0 && sf2.compareTo(sf3) > 0 && sf.compareTo(sf3) > 0);
+        sf.setValue(0);
+        sf2.setValue(0);
+        sf3.setValue(0);
+        assertTrue(sf.compareTo(sf2) == 0 && sf2.compareTo(sf3) == 0 && sf.compareTo(sf3) == 0);
+
+
+
+    }
 }

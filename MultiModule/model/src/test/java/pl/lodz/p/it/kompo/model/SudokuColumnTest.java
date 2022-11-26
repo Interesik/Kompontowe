@@ -53,4 +53,21 @@ class SudokuColumnTest {
         SudokuColumn column = new SudokuColumn(columnList);
         assertEquals(column.getClass().getSimpleName()+"[column=[SudokuField[value=1], SudokuField[value=2]]]",column.toString());
     }
+    @Test
+    void Clonable() throws CloneNotSupportedException {
+        SudokuField f = new SudokuField();
+        SudokuField f2 = new SudokuField();
+        f.setValue(1);
+        f2.setValue(2);
+        List<SudokuField> columnList = new ArrayList<>();
+        columnList.add(f);
+        columnList.add(f2);
+        SudokuRow column = new SudokuRow(columnList);
+        SudokuRow clone = column.clone();
+        assertNotSame(column,clone);
+        assertEquals(column,clone);
+        f2.setValue(4);
+        column = new SudokuRow(columnList);
+        assertNotEquals(column,clone);
+    }
 }

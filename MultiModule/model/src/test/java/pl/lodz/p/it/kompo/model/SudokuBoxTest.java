@@ -52,4 +52,21 @@ class SudokuBoxTest {
         SudokuBox box = new SudokuBox(boxList);
         assertEquals(box.getClass().getSimpleName()+"[box=[SudokuField[value=1], SudokuField[value=2]]]",box.toString());
     }
+    @Test
+    void Clonable() throws CloneNotSupportedException {
+        SudokuField f = new SudokuField();
+        SudokuField f2 = new SudokuField();
+        f.setValue(1);
+        f2.setValue(2);
+        List<SudokuField> boxList = new ArrayList<>();
+        boxList.add(f);
+        boxList.add(f2);
+        SudokuRow box = new SudokuRow(boxList);
+        SudokuRow clone = box.clone();
+        assertNotSame(box,clone);
+        assertEquals(box,clone);
+        f2.setValue(4);
+        box = new SudokuRow(boxList);
+        assertNotEquals(box,clone);
+    }
 }

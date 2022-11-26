@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 
 
-public class SudokuField implements Serializable,Cloneable {
+public class SudokuField implements Serializable,Cloneable,Comparable {
     private int value;
 
     public SudokuField() {
@@ -59,5 +59,20 @@ public class SudokuField implements Serializable,Cloneable {
     @Override
     protected SudokuField clone() throws CloneNotSupportedException {
         return (SudokuField) super.clone();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o == null) {
+            throw new NullPointerException();
+        }
+        SudokuField comparetorObj = (SudokuField) o;
+        if (this.getValue() > comparetorObj.getValue()) {
+            return 1;
+        } else if (this.getValue() == comparetorObj.getValue()) {
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

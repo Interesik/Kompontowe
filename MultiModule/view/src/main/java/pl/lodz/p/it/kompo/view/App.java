@@ -1,14 +1,24 @@
 package pl.lodz.p.it.kompo.view;
 
-import pl.lodz.p.it.kompo.model.BacktrackingSudokuSolver;
-import pl.lodz.p.it.kompo.model.SudokuBoard;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 
-public class App {
-    public static void main(String[] args) {
-        SudokuBoard sb = new SudokuBoard(new BacktrackingSudokuSolver());
-        sb.solveGame();
-        System.out.println(sb);
+public class App extends Application {
 
+    public static void main(final String[] args) {
+        launch(args);
     }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Kompo.fxml"));
+
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
+
 }

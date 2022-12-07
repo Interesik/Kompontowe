@@ -1,9 +1,6 @@
 package pl.lodz.p.it.kompo.view;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
@@ -14,11 +11,10 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Kompo.fxml"));
+    public void start(Stage primaryStage){
+        Controler Controler = new Controler();
+        Controler.showStage();
 
-        primaryStage.setScene(new Scene(root));
-        primaryStage.show();
     }
 
 }

@@ -7,13 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-
-
-
 
 
 public class SudokuBoard implements Serializable,Cloneable {
@@ -48,7 +45,7 @@ public class SudokuBoard implements Serializable,Cloneable {
         return solver.solve(this);
     }
 
-    private boolean checkBoard() {
+    public boolean checkBoard() {
         for (SudokuVerifier lis : lisners) {
             if (!lis.verify()) {
                 return false;
@@ -64,7 +61,6 @@ public class SudokuBoard implements Serializable,Cloneable {
     public void setIndex(int row, int col, int number) {
         sudokuFields.get(row * 9 + col).setValue(number);
         // on every value change checkBoard
-        checkBoard();
     }
 
     public SudokuRow getRow(int row) {
@@ -79,6 +75,17 @@ public class SudokuBoard implements Serializable,Cloneable {
             column.add(sudokuFields.get(col + (row * 9)));
         }
         return new SudokuColumn(column);
+    }
+
+    public void removeRandom(int amount) {
+        for (int i = 0; i < amount;) {
+            int rowRandom = new Random().nextInt(9);
+            int colRandom = new Random().nextInt(9);
+            if (getIndex(rowRandom,colRandom) != 0) {
+                setIndex(rowRandom, colRandom, 0);
+                i++;
+            }
+        }
     }
 
     public SudokuBox getBox(int row, int col) {

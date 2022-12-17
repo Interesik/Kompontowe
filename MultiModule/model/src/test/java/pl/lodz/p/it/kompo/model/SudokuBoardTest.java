@@ -120,6 +120,27 @@ class SudokuBoardTest {
     }
 
     @Test
+    void randomRemove() {
+        SudokuSolver back = new BacktrackingSudokuSolver();
+        SudokuBoard test = new SudokuBoard(back);
+        for(int col = 0; col < 9; col++) {
+            for(int row = 0; row < 9; row++) {
+                assertNotEquals(0,test.getIndex(row,col));
+            }
+        }
+        test.removeRandom(2);
+        int amount = 0;
+        for(int col = 0; col < 9; col++) {
+            for(int row = 0; row < 9; row++) {
+                if(test.getIndex(row,col) == 0){
+                    amount ++;
+                }
+            }
+        }
+        assertEquals(2,amount);
+    }
+
+    @Test
     void testHashCode() {
         SudokuSolver solver = new BacktrackingSudokuSolver();
         SudokuBoard s = new SudokuBoard(solver);

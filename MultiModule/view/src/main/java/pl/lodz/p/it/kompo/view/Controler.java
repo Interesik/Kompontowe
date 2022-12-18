@@ -1,6 +1,8 @@
 package pl.lodz.p.it.kompo.view;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,14 +12,18 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pl.lodz.p.it.kompo.model.BacktrackingSudokuSolver;
+import pl.lodz.p.it.kompo.model.FileSudokuBoardDao;
 import pl.lodz.p.it.kompo.model.Level;
 import pl.lodz.p.it.kompo.model.SudokuBoard;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,9 +37,17 @@ public class Controler implements Initializable {
     private Button start;
     @FXML
     private Button setter;
-
+    @FXML
+    private MenuItem open;
+    @FXML
+    private MenuItem save;
+    @FXML
+    private MenuItem saveas;
     @FXML
     Canvas canvas;
+    final FileChooser fileChooser = new FileChooser();
+
+    private FileSudokuBoardDao fileSudokuBoardDao;
     private SudokuBoard sudokuBoard;
     private BacktrackingSudokuSolver solver;
     private int selectRow;
@@ -86,6 +100,46 @@ public class Controler implements Initializable {
                     board.fillText(String.valueOf(sudokuBoard.getIndex(selectCol, selectRow)), selectCol * 30 + 1 + 10, selectRow * 30 + 1 + 20);
                     setter.setStyle("-fx-background-color: #00CC00; ");
                 }
+            }
+        });
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(!sudokuBoard.equals(null)) {
+                    fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
+                    fileSudokuBoardDao.write(sudokuBoard);
+                }
+            }
+        });
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(!sudokuBoard.equals(null)) {
+                    fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
+                    fileSudokuBoardDao.write(sudokuBoard);
+                }
+            }
+        });
+        saveas.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if(!sudokuBoard.equals(null)) {
+                    fileSudokuBoardDao = new FileSudokuBoardDao(fileChooser.showSaveDialog(new Stage()).getAbsoluteFile().toString());
+                    fileSudokuBoardDao.write(sudokuBoard);
+                }
+            }
+        });
+        open.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                fileChooser.setTitle("Open Resource File");
+                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("TXT", "*.txt")
+                );
+                fileSudokuBoardDao = new FileSudokuBoardDao(fileChooser.showOpenDialog(new Stage()).getAbsoluteFile().toString());
+                sudokuBoard = fileSudokuBoardDao.read();
+                drawBoard(canvas.getGraphicsContext2D());
             }
         });
     }

@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FileSudokuBoardDaoTest {
     String dullfilename ="";
-    String filename = "C:\\Users\\Karol\\IdeaProjects\\KOMPO\\MultiModule\\model\\Testfile.txt";
+    String filename = "..\\Testfile.txt";
     SudokuBoardDaoFactory sbdf;
     FileSudokuBoardDao fsbd;
     FileSudokuBoardDao fsbderror;

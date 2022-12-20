@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.lodz.p.it.kompo.view.About">
+   <children>
+      <Label layoutX="241.0" layoutY="191.0" text="Karol Kazusek 236558" />
+      <Label layoutX="278.0" layoutY="173.0" text="%authors" />
+      <Label layoutX="285.0" layoutY="209.0" text="Kuba Mielczarek" />
+   </children>
+</AnchorPane>

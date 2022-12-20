@@ -1,8 +1,6 @@
 package pl.lodz.p.it.kompo.view;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,6 +10,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -26,11 +25,12 @@ import pl.lodz.p.it.kompo.model.SudokuBoard;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Controler implements Initializable {
     @FXML
-    private ChoiceBox<Level> levelChoiceBox;
+    private ChoiceBox<String> levelChoiceBox;
     @FXML
     private ChoiceBox<Integer> numbers;
     @FXML
@@ -38,40 +38,59 @@ public class Controler implements Initializable {
     @FXML
     private Button setter;
     @FXML
+    private Menu file;
+    @FXML
+    private Menu help;
+    @FXML
+    private Menu language;
+    @FXML
     private MenuItem open;
     @FXML
     private MenuItem save;
     @FXML
     private MenuItem saveas;
     @FXML
+    private MenuItem English;
+    @FXML
+    private MenuItem Polski;
+    @FXML
+    private MenuItem about;
+    @FXML
     Canvas canvas;
     final FileChooser fileChooser = new FileChooser();
 
+    Locale loc = new Locale("en");
     private FileSudokuBoardDao fileSudokuBoardDao;
     private SudokuBoard sudokuBoard;
     private BacktrackingSudokuSolver solver;
     private int selectRow;
     private int selectCol;
+    private String[] levels = new String[3];
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
+        levels[0] = finalResourceBundle.getString("easy");
+        levels[1] = finalResourceBundle.getString("medium");
+        levels[2] = finalResourceBundle.getString("hard");
         solver = new BacktrackingSudokuSolver();
-        levelChoiceBox.getItems().setAll(Level.values());
-        numbers.getItems().setAll(1,2,3,4,5,6,7,8,9);
+        levelChoiceBox.getItems().setAll(levels);
+        numbers.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8, 9);
         canvas.setOnMousePressed(e -> BoardMouseClicked());
 
         start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 GraphicsContext board = canvas.getGraphicsContext2D();
-                if (levelChoiceBox.getSelectionModel().getSelectedItem() == Level.Easy) {
+                if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[0]) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Easy.getNumberEmpty());
                     drawBoard(board);
-                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == Level.Medium) {
+                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[1]) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Medium.getNumberEmpty());
                     drawBoard(board);
-                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == Level.Hard) {
+                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[2]) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Hard.getNumberEmpty());
                     drawBoard(board);
@@ -82,10 +101,10 @@ public class Controler implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 GraphicsContext board = canvas.getGraphicsContext2D();
-                if(numbers.getSelectionModel().getSelectedItem() != 0 && sudokuBoard.getIndex(selectCol, selectRow) == 0) {
+                if (numbers.getSelectionModel().getSelectedItem() != 0 && sudokuBoard.getIndex(selectCol, selectRow) == 0) {
                     sudokuBoard.setIndex(selectCol, selectRow, numbers.getSelectionModel().getSelectedItem());
                 }
-                if(!sudokuBoard.checkBoard()) {
+                if (!sudokuBoard.checkBoard()) {
                     sudokuBoard.setIndex(selectCol, selectRow, 0);
                     drawBoard(board);
                     board.setFill(Color.RED);
@@ -105,7 +124,7 @@ public class Controler implements Initializable {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(!sudokuBoard.equals(null)) {
+                if (!sudokuBoard.equals(null)) {
                     fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
                     fileSudokuBoardDao.write(sudokuBoard);
                 }
@@ -114,7 +133,7 @@ public class Controler implements Initializable {
         save.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(!sudokuBoard.equals(null)) {
+                if (!sudokuBoard.equals(null)) {
                     fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
                     fileSudokuBoardDao.write(sudokuBoard);
                 }
@@ -123,7 +142,7 @@ public class Controler implements Initializable {
         saveas.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if(!sudokuBoard.equals(null)) {
+                if (!sudokuBoard.equals(null)) {
                     fileSudokuBoardDao = new FileSudokuBoardDao(fileChooser.showSaveDialog(new Stage()).getAbsoluteFile().toString());
                     fileSudokuBoardDao.write(sudokuBoard);
                 }
@@ -132,7 +151,7 @@ public class Controler implements Initializable {
         open.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                fileChooser.setTitle("Open Resource File");
+                fileChooser.setTitle(finalResourceBundle.getString("OpenResourceFile"));
                 fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
                 fileChooser.getExtensionFilters().addAll(
                         new FileChooser.ExtensionFilter("TXT", "*.txt")
@@ -142,6 +161,49 @@ public class Controler implements Initializable {
                 drawBoard(canvas.getGraphicsContext2D());
             }
         });
+
+        about.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                About about = new About();
+                about.showStage(loc);
+            }
+        });
+
+        English.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                loc = new Locale("en");
+                ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
+                setText(finalResourceBundle);
+            }
+        });
+
+        Polski.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                loc = new Locale("pl");
+                ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
+                setText(finalResourceBundle);
+            }
+        });
+    }
+
+    private void setText(ResourceBundle resourceBundle) {
+        open.setText(resourceBundle.getString("open"));
+        setter.setText(resourceBundle.getString("set"));
+        about.setText(resourceBundle.getString("about"));
+        save.setText(resourceBundle.getString("save"));
+        saveas.setText(resourceBundle.getString("saveas"));
+        start.setText(resourceBundle.getString("start"));
+        file.setText(resourceBundle.getString("file"));
+        help.setText(resourceBundle.getString("help"));
+        language.setText(resourceBundle.getString("language"));
+        levels[0] = resourceBundle.getString("easy");
+        levels[1] = resourceBundle.getString("medium");
+        levels[2] = resourceBundle.getString("hard");
+        levelChoiceBox.getItems().setAll(levels);
+        levelChoiceBox.setValue("");
     }
 
     public void showStage() {
@@ -186,12 +248,14 @@ public class Controler implements Initializable {
         canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(final MouseEvent e) {
-                int mouse_x = (int) e.getX();
-                int mouse_y = (int) e.getY();
-                selectRow = mouse_y / 30;
-                selectCol = mouse_x / 30;
-                drawBoard(canvas.getGraphicsContext2D());
-                setter.setStyle("");
+                if(sudokuBoard != null) {
+                    int mouse_x = (int) e.getX();
+                    int mouse_y = (int) e.getY();
+                    selectRow = mouse_y / 30;
+                    selectCol = mouse_x / 30;
+                    drawBoard(canvas.getGraphicsContext2D());
+                    setter.setStyle("");
+                }
             }
         });
     }

@@ -15,8 +15,4 @@ public enum Level {
     public int getNumberEmpty() {
         return numberEmpty;
     }
-
-    public void setNumberEmpty(int numberEmpty) {
-        this.numberEmpty = numberEmpty;
-    }
 }

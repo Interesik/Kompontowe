@@ -2,6 +2,8 @@ package pl.lodz.p.it.kompo.model;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -12,9 +14,11 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class SudokuField implements Serializable,Cloneable,Comparable {
     private int value;
+    private final PropertyChangeSupport propertySupport;
 
     public SudokuField() {
         this.value = 0;
+        this.propertySupport = new PropertyChangeSupport(this);
     }
 
     public int getValue() {
@@ -22,7 +26,13 @@ public class SudokuField implements Serializable,Cloneable,Comparable {
     }
 
     public void setValue(int value) {
+        int oldValue = this.value;
         this.value = value;
+        propertySupport.firePropertyChange("Value", oldValue, value);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertySupport.addPropertyChangeListener(listener);
     }
 
     @Override

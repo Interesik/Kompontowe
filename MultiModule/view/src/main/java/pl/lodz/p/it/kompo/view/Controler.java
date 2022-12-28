@@ -1,4 +1,6 @@
 package pl.lodz.p.it.kompo.view;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.adapter.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -17,14 +19,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import pl.lodz.p.it.kompo.model.BacktrackingSudokuSolver;
-import pl.lodz.p.it.kompo.model.FileSudokuBoardDao;
-import pl.lodz.p.it.kompo.model.Level;
-import pl.lodz.p.it.kompo.model.SudokuBoard;
+import pl.lodz.p.it.kompo.model.*;
 
 import java.io.File;
 import java.io.IOException;
+
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -59,38 +60,36 @@ public class Controler implements Initializable {
     Canvas canvas;
     final FileChooser fileChooser = new FileChooser();
 
-    Locale loc = new Locale("en");
+    private static Locale loc = new Locale("en");
     private FileSudokuBoardDao fileSudokuBoardDao;
+
     private SudokuBoard sudokuBoard;
+
     private BacktrackingSudokuSolver solver;
     private int selectRow;
     private int selectCol;
-    private String[] levels = new String[3];
+    private static Stage primaryStage = new Stage();
+    private Scene main;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
-        levels[0] = finalResourceBundle.getString("easy");
-        levels[1] = finalResourceBundle.getString("medium");
-        levels[2] = finalResourceBundle.getString("hard");
         solver = new BacktrackingSudokuSolver();
-        levelChoiceBox.getItems().setAll(levels);
+        levelChoiceBox.getItems().setAll(resourceBundle.getString("easy"), resourceBundle.getString("medium"), resourceBundle.getString("hard"));
         numbers.getItems().setAll(1, 2, 3, 4, 5, 6, 7, 8, 9);
         canvas.setOnMousePressed(e -> BoardMouseClicked());
-
         start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 GraphicsContext board = canvas.getGraphicsContext2D();
-                if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[0]) {
+                if (levelChoiceBox.getSelectionModel().getSelectedItem().equals(resourceBundle.getString("easy"))) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Easy.getNumberEmpty());
                     drawBoard(board);
-                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[1]) {
+                } else if (levelChoiceBox.getSelectionModel().getSelectedItem().equals(resourceBundle.getString("medium"))) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Medium.getNumberEmpty());
                     drawBoard(board);
-                } else if (levelChoiceBox.getSelectionModel().getSelectedItem() == levels[2]) {
+                } else if (levelChoiceBox.getSelectionModel().getSelectedItem().equals(resourceBundle.getString("hard"))) {
                     sudokuBoard = new SudokuBoard(solver);
                     sudokuBoard.removeRandom(Level.Hard.getNumberEmpty());
                     drawBoard(board);
@@ -101,33 +100,32 @@ public class Controler implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 GraphicsContext board = canvas.getGraphicsContext2D();
-                if (numbers.getSelectionModel().getSelectedItem() != 0 && sudokuBoard.getIndex(selectCol, selectRow) == 0) {
-                    sudokuBoard.setIndex(selectCol, selectRow, numbers.getSelectionModel().getSelectedItem());
+                try {
+                    IntegerProperty iP = JavaBeanIntegerPropertyBuilder.create()
+                            .bean(sudokuBoard.getSudokuField(selectCol,selectRow))
+                            .name("value").build();
+                    if (numbers.getSelectionModel().getSelectedItem() != 0 && iP.getValue() == 0) {
+                        iP.setValue(numbers.getSelectionModel().getSelectedItem());
+                    }
+                    if (!sudokuBoard.checkBoard()) {
+                        iP.set(0);
+                        drawBoard(board);
+                        board.setFill(Color.RED);
+                        board.fillRoundRect(selectCol * 30 + 1, selectRow * 30 + 1, 30, 30, 0, 0);
+                        board.setFill(Color.DARKRED);
+                        board.fillText(String.valueOf(sudokuBoard.getIndex(selectCol, selectRow)), selectCol * 30 + 1 + 10, selectRow * 30 + 1 + 20);
+                    } else {
+                        drawBoard(canvas.getGraphicsContext2D());
+                        board.setFill(Color.LIGHTGREEN);
+                        board.fillRoundRect(selectCol * 30 + 1, selectRow * 30 + 1, 30, 30, 0, 0);
+                        board.setFill(Color.GREEN);
+                        board.fillText(String.valueOf(sudokuBoard.getIndex(selectCol, selectRow)), selectCol * 30 + 1 + 10, selectRow * 30 + 1 + 20);
+                        setter.setStyle("-fx-background-color: #00CC00; ");
+                    }
+                } catch (NoSuchMethodException e) {
+                    throw new RuntimeException(e);
                 }
-                if (!sudokuBoard.checkBoard()) {
-                    sudokuBoard.setIndex(selectCol, selectRow, 0);
-                    drawBoard(board);
-                    board.setFill(Color.RED);
-                    board.fillRoundRect(selectCol * 30 + 1, selectRow * 30 + 1, 30, 30, 0, 0);
-                    board.setFill(Color.DARKRED);
-                    board.fillText(String.valueOf(sudokuBoard.getIndex(selectCol, selectRow)), selectCol * 30 + 1 + 10, selectRow * 30 + 1 + 20);
-                } else {
-                    drawBoard(canvas.getGraphicsContext2D());
-                    board.setFill(Color.LIGHTGREEN);
-                    board.fillRoundRect(selectCol * 30 + 1, selectRow * 30 + 1, 30, 30, 0, 0);
-                    board.setFill(Color.GREEN);
-                    board.fillText(String.valueOf(sudokuBoard.getIndex(selectCol, selectRow)), selectCol * 30 + 1 + 10, selectRow * 30 + 1 + 20);
-                    setter.setStyle("-fx-background-color: #00CC00; ");
-                }
-            }
-        });
-        save.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (!sudokuBoard.equals(null)) {
-                    fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
-                    fileSudokuBoardDao.write(sudokuBoard);
-                }
+
             }
         });
         save.setOnAction(new EventHandler<ActionEvent>() {
@@ -151,7 +149,7 @@ public class Controler implements Initializable {
         open.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                fileChooser.setTitle(finalResourceBundle.getString("OpenResourceFile"));
+                fileChooser.setTitle(resourceBundle.getString("OpenResourceFile"));
                 fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
                 fileChooser.getExtensionFilters().addAll(
                         new FileChooser.ExtensionFilter("TXT", "*.txt")
@@ -174,8 +172,7 @@ public class Controler implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 loc = new Locale("en");
-                ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
-                setText(finalResourceBundle);
+                reloadStage(loc);
             }
         });
 
@@ -183,38 +180,33 @@ public class Controler implements Initializable {
             @Override
             public void handle(ActionEvent actionEvent) {
                 loc = new Locale("pl");
-                ResourceBundle finalResourceBundle = ResourceBundle.getBundle("ResourceBundle",loc);
-                setText(finalResourceBundle);
+                reloadStage(loc);
             }
         });
     }
-
-    private void setText(ResourceBundle resourceBundle) {
-        open.setText(resourceBundle.getString("open"));
-        setter.setText(resourceBundle.getString("set"));
-        about.setText(resourceBundle.getString("about"));
-        save.setText(resourceBundle.getString("save"));
-        saveas.setText(resourceBundle.getString("saveas"));
-        start.setText(resourceBundle.getString("start"));
-        file.setText(resourceBundle.getString("file"));
-        help.setText(resourceBundle.getString("help"));
-        language.setText(resourceBundle.getString("language"));
-        levels[0] = resourceBundle.getString("easy");
-        levels[1] = resourceBundle.getString("medium");
-        levels[2] = resourceBundle.getString("hard");
-        levelChoiceBox.getItems().setAll(levels);
-        levelChoiceBox.setValue("");
-    }
-
-    public void showStage() {
-        Stage primaryStage = new Stage();
+    public void reloadStage(Locale loc){
+        primaryStage.close();
         try {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Kompo.fxml"));
-            primaryStage.setScene(new Scene(root));
+            Parent change = FXMLLoader.load(getClass().getClassLoader().getResource("Kompo.fxml"), ResourceBundle.getBundle("ResourceBundle",loc));
+            main = new Scene(change);
+            primaryStage.setScene(main);
+            primaryStage.show();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void showStage() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Kompo.fxml"), ResourceBundle.getBundle("ResourceBundle",loc));
+            main = new Scene(root);
+            primaryStage.setScene(main);
             primaryStage.show();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
     public void drawBoard(GraphicsContext board) {
         int size = 29;

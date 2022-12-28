@@ -58,6 +58,11 @@ public class SudokuBoard implements Serializable,Cloneable {
         return sudokuFields.get(row * 9 + col).getValue();
     }
 
+    public SudokuField getSudokuField(int row, int col) {
+        return sudokuFields.get(row * 9 + col);
+    }
+    // For binding in javaFX, because i have to access class address to bind.
+
     public void setIndex(int row, int col, int number) {
         sudokuFields.get(row * 9 + col).setValue(number);
         // on every value change checkBoard

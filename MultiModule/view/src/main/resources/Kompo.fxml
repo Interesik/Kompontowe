@@ -8,20 +8,20 @@
   <children>
     <MenuBar VBox.vgrow="NEVER">
       <menus>
-        <Menu fx:id="file" mnemonicParsing="false" text="File">
+        <Menu fx:id="file" mnemonicParsing="false" text="%file">
           <items>
-            <MenuItem fx:id="open" mnemonicParsing="false" text="Open…" />
+            <MenuItem fx:id="open" mnemonicParsing="false" text="%open" />
             <SeparatorMenuItem mnemonicParsing="false" />
-            <MenuItem fx:id="save" mnemonicParsing="false" text="Save" />
-            <MenuItem fx:id="saveas" mnemonicParsing="false" text="Save As…" />
+            <MenuItem fx:id="save" mnemonicParsing="false" text="%save" />
+            <MenuItem fx:id="saveas" mnemonicParsing="false" text="%saveas" />
           </items>
         </Menu>
-        <Menu fx:id="help" mnemonicParsing="false" text="Help">
+        <Menu fx:id="help" mnemonicParsing="false" text="%help">
           <items>
-            <MenuItem fx:id="about" mnemonicParsing="false" text="About OurSudokuAPP" />
+            <MenuItem fx:id="about" mnemonicParsing="false" text="%about" />
           </items>
         </Menu>
-            <Menu fx:id="language" text="Language">
+            <Menu fx:id="language" text="%language">
                <items>
                   <MenuItem fx:id="English" mnemonicParsing="false" text="English" />
                   <MenuItem fx:id="Polski" mnemonicParsing="false" text="Polski" />
@@ -32,10 +32,10 @@
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
         <ChoiceBox fx:id="levelChoiceBox" layoutX="14.0" layoutY="14.0" prefWidth="150.0" />
-            <Button fx:id="start" layoutX="185.0" layoutY="14.0" mnemonicParsing="false" text="Start" />
+            <Button fx:id="start" layoutX="185.0" layoutY="14.0" mnemonicParsing="false" text="%start" />
             <Canvas fx:id="canvas" height="360.0" layoutX="256.0" layoutY="45.0" width="360.0" />
             <ChoiceBox fx:id="numbers" layoutX="14.0" layoutY="57.0" prefWidth="150.0" />
-            <Button fx:id="setter" layoutX="180.0" layoutY="57.0" mnemonicParsing="false" text="Set" />
+            <Button fx:id="setter" layoutX="180.0" layoutY="57.0" mnemonicParsing="false" text="%set" />
       </children>
     </AnchorPane>
   </children>

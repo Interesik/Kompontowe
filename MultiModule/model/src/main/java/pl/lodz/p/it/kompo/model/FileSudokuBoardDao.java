@@ -14,26 +14,26 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public SudokuBoard read() {
+    public SudokuBoard read() throws ReadFromFileException{
         try (
                 FileInputStream fin = new FileInputStream(filename);
                 ObjectInputStream oin = new ObjectInputStream(fin)
                 ) {
             return (SudokuBoard) oin.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException(e);
+            throw new ReadFromFileException("ExceptionRead",e);
         }
     }
 
     @Override
-    public void write(SudokuBoard obj) {
+    public void write(SudokuBoard obj) throws SaveToFileException{
         try (
                 FileOutputStream fout = new FileOutputStream(filename);
                 ObjectOutputStream oos = new ObjectOutputStream(fout)
                 ) {
             oos.writeObject(obj);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new SaveToFileException("ExceptionWrite",e);
         }
     }
 

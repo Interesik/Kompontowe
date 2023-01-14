@@ -25,7 +25,6 @@ import java.io.File;
 import java.io.IOException;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -133,7 +132,11 @@ public class Controler implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 if (!sudokuBoard.equals(null)) {
                     fileSudokuBoardDao = new FileSudokuBoardDao("..\\SudokuFile.txt");
-                    fileSudokuBoardDao.write(sudokuBoard);
+                    try {
+                        fileSudokuBoardDao.write(sudokuBoard);
+                    } catch (SaveToFileException e) {
+                        throw new SudokuException(e.getMessage(),e,loc);
+                    }
                 }
             }
         });
@@ -142,7 +145,11 @@ public class Controler implements Initializable {
             public void handle(ActionEvent actionEvent) {
                 if (!sudokuBoard.equals(null)) {
                     fileSudokuBoardDao = new FileSudokuBoardDao(fileChooser.showSaveDialog(new Stage()).getAbsoluteFile().toString());
-                    fileSudokuBoardDao.write(sudokuBoard);
+                    try {
+                        fileSudokuBoardDao.write(sudokuBoard);
+                    } catch (SaveToFileException e) {
+                        throw new SudokuException(e.getMessage(),e,loc);
+                    }
                 }
             }
         });
@@ -155,7 +162,11 @@ public class Controler implements Initializable {
                         new FileChooser.ExtensionFilter("TXT", "*.txt")
                 );
                 fileSudokuBoardDao = new FileSudokuBoardDao(fileChooser.showOpenDialog(new Stage()).getAbsoluteFile().toString());
-                sudokuBoard = fileSudokuBoardDao.read();
+                try {
+                    sudokuBoard = fileSudokuBoardDao.read();
+                } catch (ReadFromFileException e) {
+                    throw new SudokuException(e.getMessage(),e,loc);
+                }
                 drawBoard(canvas.getGraphicsContext2D());
             }
         });

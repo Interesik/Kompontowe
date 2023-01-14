@@ -1,7 +1,7 @@
 package pl.lodz.p.it.kompo.model;
 
 public interface Dao<T> extends AutoCloseable {
-    T read();
+    T read() throws ReadFromFileException;
 
-    void write(T obj);
+    void write(T obj) throws SaveToFileException;
 }

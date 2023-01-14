@@ -14,7 +14,6 @@ public class App extends Application {
     public void start(Stage primaryStage){
         Controler Controler = new Controler();
         Controler.showStage();
-
     }
 
 }

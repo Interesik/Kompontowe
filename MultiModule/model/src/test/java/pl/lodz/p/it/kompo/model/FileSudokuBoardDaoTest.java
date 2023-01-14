@@ -18,16 +18,20 @@ class FileSudokuBoardDaoTest {
     SudokuBoard sb2;
     SudokuSolver ss = new BacktrackingSudokuSolver();
     @BeforeEach
-    void setUp() {
+    void setUp() throws SudokuException{
         this.sbdf = new SudokuBoardDaoFactory();
         this.fsbd = sbdf.getFileDao(filename);
         this.fsbderror = sbdf.getFileDao(dullfilename);
         this.sb = new SudokuBoard(ss);
         this.sb2 = new SudokuBoard(ss);
-        fsbd.write(this.sb);
+        try {
+            fsbd.write(this.sb);
+        } catch (SaveToFileException e) {
+            throw new SudokuException(e);
+        }
     }
     @Test
-    void read() {
+    void read() throws ReadFromFileException {
         SudokuBoard sb3 = fsbd.read();
         assertEquals(sb3,sb);
 
@@ -36,7 +40,7 @@ class FileSudokuBoardDaoTest {
     }
 
     @Test
-    void write() {
+    void write() throws ReadFromFileException, SaveToFileException {
         fsbd.write(this.sb2);
         SudokuBoard sb4 = fsbd.read();
         assertEquals(sb4,sb2);

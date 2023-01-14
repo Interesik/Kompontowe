@@ -11,9 +11,11 @@ import java.util.Random;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SudokuBoard implements Serializable,Cloneable {
+    Logger logger = LoggerFactory.getLogger(SudokuBoard.class);
     private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
@@ -23,13 +25,17 @@ public class SudokuBoard implements Serializable,Cloneable {
         for (int i = 0; i < 81; i++) {
             sudokuFields.set(i, new SudokuField());
         }
+        logger.debug("Created empty board");
         this.solver = resolver;
+        logger.debug("Created solver instance");
         // random generate starting board
         for (int r = 0; r < 9; r++) {
             sudokuFields.get(r).setValue(r);
         }
         Collections.shuffle(sudokuFields);
+        logger.debug("Inserts random values");
         this.solveGame();
+        logger.debug("Solving board");
         for (int i = 0; i < 9; i++) {
             lisners.add(getRow(i));
             lisners.add(getColumn(i));
@@ -91,6 +97,7 @@ public class SudokuBoard implements Serializable,Cloneable {
                 i++;
             }
         }
+        logger.debug("Removed random {} numbers",amount);
     }
 
     public SudokuBox getBox(int row, int col) {

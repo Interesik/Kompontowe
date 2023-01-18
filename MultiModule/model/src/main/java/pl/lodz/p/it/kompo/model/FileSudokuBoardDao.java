@@ -14,7 +14,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public SudokuBoard read() throws ReadFromFileException{
+    public SudokuBoard read() throws ReadFromFileException {
         try (
                 FileInputStream fin = new FileInputStream(filename);
                 ObjectInputStream oin = new ObjectInputStream(fin)
@@ -26,7 +26,7 @@ public class FileSudokuBoardDao implements Dao<SudokuBoard> {
     }
 
     @Override
-    public void write(SudokuBoard obj) throws SaveToFileException{
+    public void write(SudokuBoard obj) throws SaveToFileException {
         try (
                 FileOutputStream fout = new FileOutputStream(filename);
                 ObjectOutputStream oos = new ObjectOutputStream(fout)

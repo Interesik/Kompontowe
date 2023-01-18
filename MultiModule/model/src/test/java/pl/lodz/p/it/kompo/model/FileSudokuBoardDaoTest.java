@@ -35,7 +35,7 @@ class FileSudokuBoardDaoTest {
         SudokuBoard sb3 = fsbd.read();
         assertEquals(sb3,sb);
 
-        Exception exception = assertThrows(RuntimeException.class,() -> fsbderror.read());
+        Exception exception = assertThrows(ReadFromFileException.class,() -> fsbderror.read());
         assertEquals(exception.getCause().getClass(), FileNotFoundException.class);
     }
 
@@ -44,7 +44,7 @@ class FileSudokuBoardDaoTest {
         fsbd.write(this.sb2);
         SudokuBoard sb4 = fsbd.read();
         assertEquals(sb4,sb2);
-        Exception exception = assertThrows(RuntimeException.class,()->fsbderror.write(sb));
+        Exception exception = assertThrows(SaveToFileException.class,()->fsbderror.write(sb));
         assertEquals(exception.getCause().getClass(), FileNotFoundException.class);
     }
     @Test

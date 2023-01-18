@@ -8,18 +8,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+@Entity(name = "Board")
 public class SudokuBoard implements Serializable,Cloneable {
     Logger logger = LoggerFactory.getLogger(SudokuBoard.class);
     private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
     private SudokuSolver solver;
+    private Long id;
 
     public SudokuBoard(SudokuSolver resolver) {
         for (int i = 0; i < 81; i++) {
@@ -45,6 +50,10 @@ public class SudokuBoard implements Serializable,Cloneable {
                 lisners.add(getBox(i, j));
             }
         }
+    }
+
+    protected SudokuBoard() {
+
     }
 
     public boolean solveGame() {
@@ -162,5 +171,15 @@ public class SudokuBoard implements Serializable,Cloneable {
         clone.lisners = cloneLisners;
         clone.sudokuFields = cloneSudokuFields;
         return clone;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    @GeneratedValue
+    public Long getId() {
+        return id;
     }
 }

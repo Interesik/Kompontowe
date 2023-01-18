@@ -5,19 +5,21 @@ import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-
-
-
+@Entity(name = "field")
 public class SudokuField implements Serializable,Cloneable,Comparable {
-    private int value;
+    private int value = 0;
     private final PropertyChangeSupport propertySupport;
+    private Long id;
 
     public SudokuField() {
-        this.value = 0;
         this.propertySupport = new PropertyChangeSupport(this);
     }
 
@@ -84,5 +86,15 @@ public class SudokuField implements Serializable,Cloneable,Comparable {
         } else {
             return -1;
         }
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    @Id
+    @GeneratedValue
+    public Long getId() {
+        return id;
     }
 }

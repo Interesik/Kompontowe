@@ -9,6 +9,7 @@ import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -16,7 +17,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 @Entity(name = "field")
 public class SudokuField implements Serializable,Cloneable,Comparable {
     private int value = 0;
+    @Transient
     private final PropertyChangeSupport propertySupport;
+    @Id
     private Long id;
 
     public SudokuField() {

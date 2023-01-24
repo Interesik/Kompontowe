@@ -2,40 +2,50 @@ package pl.lodz.p.it.kompo.model;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.SHORT_PREFIX_STYLE;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
-import jakarta.persistence.*;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 @Entity(name = "Board")
 public class SudokuBoard implements Serializable,Cloneable {
     @Transient
     private Logger logger = LoggerFactory.getLogger(SudokuBoard.class);
-    @OneToMany
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            orphanRemoval = true,
+            cascade = CascadeType.ALL)
     private List<SudokuField> sudokuFields = Arrays.asList(new SudokuField[81]);
     @Transient
     private List<SudokuVerifier> lisners = new ArrayList<>();
 
+    @Transient
     private SudokuSolver solver;
 
     @Id
-    @Column(name = "PR_KEY", unique=true)
-    private Long prKey;
+    @Column(name = "PR_KEY", unique = true)
+    private String prKey;
 
 
-    public Long getPrKey() {
+    public String getPrKey() {
         return prKey;
     }
 
-    public void setPrKey(Long prKey) {
+    public void setPrKey(String prKey) {
         this.prKey = prKey;
     }
 

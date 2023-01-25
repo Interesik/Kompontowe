@@ -1,13 +1,13 @@
 package pl.lodz.p.it.kompo.view;
 
 import javafx.fxml.FXMLLoader;
+import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class About {
     public void showStage(Locale loc) {

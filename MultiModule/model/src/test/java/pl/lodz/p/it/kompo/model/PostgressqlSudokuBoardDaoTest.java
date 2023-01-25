@@ -9,8 +9,9 @@ class PostgressqlSudokuBoardDaoTest {
     SudokuBoard sb;
     SudokuBoard sb2;
     SudokuSolver ss = new BacktrackingSudokuSolver();
-    PostgressqlSudokuBoardDao pb = new PostgressqlSudokuBoardDao("First");
-    PostgressqlSudokuBoardDao pberror = new PostgressqlSudokuBoardDao("Two");
+    SudokuBoardDaoFactory sbdf = new SudokuBoardDaoFactory();
+    PostgressqlSudokuBoardDao pb = sbdf.getBaseDao("First");
+    PostgressqlSudokuBoardDao pberror = sbdf.getBaseDao("Two");
 
     @Test
     void persistence(){
